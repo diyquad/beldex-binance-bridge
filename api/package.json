@@ -1,7 +1,7 @@
 {
-  "name": "loki-network-bridge-api",
+  "name": "beldex-network-bridge-api",
   "version": "1.0.0",
-  "description": "Bridge API for converting Loki to B-Loki",
+  "description": "Bridge API for converting BDX to B-BDX",
   "main": "index.js",
   "private": true,
   "scripts": {
@@ -11,9 +11,10 @@
     "test": "cross-env TZ=UTC NODE_ENV=test mocha -r esm --recursive --timeout 10000",
     "preinstall": "npm link ../bridge-core"
   },
-  "author": "Loki Network",
+  "author": "Beldex Network",
   "license": "ISC",
   "dependencies": {
+    "@babel/register": "^7.12.10",
     "body-parser": "^1.19.0",
     "bridge-core": "file:../bridge-core",
     "compression": "^1.7.4",
@@ -27,6 +28,7 @@
     "sha256": "^0.2.0"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.12.11",
     "chai": "^4.2.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",

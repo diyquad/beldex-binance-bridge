@@ -17,8 +17,8 @@
       "password": ""
     },
     "wallet": {
-      "filename": "My production wallet",
-      "password": ""
+      "filename": "test",
+      "password": "test"
     },
     "withdrawalFee": 5
   }

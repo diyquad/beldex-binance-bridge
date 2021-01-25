@@ -1,6 +1,6 @@
 export const TYPE = {
   LOKI: 'loki',
-  BNB: 'bnb', // This is the wallet type for BLOKI
+  BNB: 'bnb', // This is the wallet type for BBDX
 };
 
 export const SWAP_TYPE = {

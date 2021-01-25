@@ -3,11 +3,11 @@ import http from 'http';
 import request from 'request-promise';
 
 /**
- * A client to communicate with Loki Wallet.
+ * A client to communicate with Beldex Wallet.
  */
 export default class LokiClient {
   /**
-   * Create a Loki client
+   * Create a Beldex client
    * @param {{ hostname, port, username, password }} rpcConfig The rpc config.
    * @param {{ filename, password, accountIndex }} [walletConfig] The wallet config.
    */
@@ -28,8 +28,8 @@ export default class LokiClient {
         params,
       },
       auth: {
-        user: this.rpc.username,
-        pass: this.rpc.password,
+        user: 'test',
+        pass: 'test',
         sendImmediately: false,
       },
       agent: new http.Agent({
@@ -37,10 +37,9 @@ export default class LokiClient {
         maxSockets: 1,
       }),
     };
-
-
     try {
       const response = await request(options);
+      console.log("q:", response)
       if (response.error) {
         // If wallet is not opened, then open it and call the rpc
         if (this.wallet && method !== 'close_wallet' && response.error.message === 'No wallet file') {
@@ -82,11 +81,11 @@ export default class LokiClient {
    * @throws Will throw an error if opening a wallet failed.
    */
   async openWallet() {
+    console.log("ee")
     if (!this.wallet) return;
-
     // close any open wallet
     await this._request('close_wallet');
-
+    console.log("1",this.wallet)
     const { filename, password } = this.wallet;
 
     const data = await this._request('open_wallet', {
@@ -99,12 +98,12 @@ export default class LokiClient {
   /**
    * Create a new sub-address from the current open wallet.
    *
-   * @returns {Promise<{ address: string, address_index: number }>} A new loki account or `null` if we failed to make one.
+   * @returns {Promise<{ address: string, address_index: number }>} A new beldex account or `null` if we failed to make one.
    */
   async createAccount() {
     const data = await this._request('create_address', { account_index: this.accountIndex });
     if (data.error) {
-      console.log('[Loki Wallet] Failed to create account: ', data.error);
+      console.log('[Beldex Wallet] Failed to create account: ', data.error);
       return null;
     }
 
@@ -117,7 +116,7 @@ export default class LokiClient {
    * Get all incoming transactions sent to the given `addressIndex`.
    *
    * @param {number} addressIndex The index of the sub-address.
-   * @returns {Promise<[object]>} An array of LOKI transactions.
+   * @returns {Promise<[object]>} An array of BDX transactions.
    */
   async getIncomingTransactions(addressIndex, options = {}) {
     const data = await this._request('get_transfers', {
@@ -131,7 +130,7 @@ export default class LokiClient {
     });
 
     if (data.error) {
-      console.log('[Loki Wallet] Failed to get transactions: ', data.error);
+      console.log('[Lki Wallet] Failed to get transactions: ', data.error);
       return [];
     }
 
@@ -144,7 +143,7 @@ export default class LokiClient {
 
   /**
    * Validate an address.
-   * @param {string} address The LOKI address to validate.
+   * @param {string} address The beldex address to validate.
    * @returns {Promise<boolean>} Wether the given `address` is valid or not.
    */
   async validateAddress(address) {
@@ -154,7 +153,7 @@ export default class LokiClient {
     });
 
     if (data.error) {
-      console.log('[Loki Wallet] Failed to validate address: ', data.error);
+      console.log('[Beldex Wallet] Failed to validate address: ', data.error);
       return false;
     }
 
@@ -174,7 +173,7 @@ export default class LokiClient {
     });
 
     if (data.error) {
-      console.log('[Loki Wallet] Failed to get balances: ', data.error);
+      console.log('[Beldex Wallet] Failed to get balances: ', data.error);
       return [];
     }
 
@@ -201,7 +200,7 @@ export default class LokiClient {
 
     if (data.error || !data.result) {
       const error = (data.error && data.error.message) || 'No result found';
-      throw new Error(`[Loki Wallet] Failed to send transactions - ${error}`);
+      throw new Error(`[Beldex Wallet] Failed to send transactions - ${error}`);
     }
 
     return data.result.tx_hash_list;

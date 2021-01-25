@@ -14,7 +14,7 @@ const txCache = {};
  * Request Data:
  *  - type: The type of swap (SWAP_TYPE).
  *  - address: An address. The type of address is determined from the `type` passed.
- *  E.g If `type = LOKI_TO_BLOKI` then the `address` is expected to be a loki address.
+ *  E.g If `type = BDX_TO_BBDX` then the `address` is expected to be a beldex address.
  */
 export function swapToken(req, res, next) {
   crypto.decryptAPIPayload(req, res, next, async data => {
@@ -28,8 +28,8 @@ export function swapToken(req, res, next) {
     const { type, address } = data;
 
     // We assume the address type is that of the currency we are swapping to.
-    // So if the swap is LOKI_TO_BLOKI then we want the user to give the BNB address
-    // We then generate a LOKI address that they will deposit to.
+    // So if the swap is BDX_TO_BBDX then we want the user to give the BNB address
+    // We then generate a BDX address that they will deposit to.
     // After the deposit we pay them out to the BNB address they passed.
     const addressType = type === SWAP_TYPE.LOKI_TO_BLOKI ? TYPE.BNB : TYPE.LOKI;
 
@@ -210,7 +210,7 @@ export async function getSwaps(req, res, next) {
 }
 
 /**
- * Get all unconfirmed loki transactions
+ * Get all unconfirmed beldex transactions
  * Request Data:
  *  - uuid: The uuid that was returned in `swapToken` (client account uuid)
  */
